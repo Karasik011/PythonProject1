@@ -1,5 +1,5 @@
 import requests
-import csv
+import pandas as pd
 from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
 keys = ['Champion Name', 'Kills','Deaths','Assists','Role','Win Status']
 def main():
@@ -12,12 +12,9 @@ def main():
         match_history_response = requests.get(MATCH_HISTORY.format(puu_id))
         if match_history_response.status_code == 200:
             matches = match_history_response.json()
-
+            summ_dict = {}
             for i in matches:
-
-
                 match_info_response = requests.get(MATCH_STATS.format(i))
-
                 if match_info_response.status_code == 200:
                     match_data = match_info_response.json()
                     if match_data['info']['gameMode'] == 'CLASSIC':
@@ -38,10 +35,12 @@ def main():
                         else:
                             win_status = 'Loss'
                         match_type = match_data['info']['gameMode']
-
+                        mydict = dict(summ_dict,Champion=champion_name, Kills= kills, Deaths=deaths, Assists=assists, TeamPosition=team_position,WinStatus=win_status,Type=match_type)
                         print(champion_name, kills, deaths, assists, kda, team_position, win_status,match_type)
+                        print(mydict)
                     else:
                         print('Фан режим')
+                    champs_data = pd.DataFrame(mydict)
 
 
 main()

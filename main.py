@@ -1,7 +1,9 @@
 import requests
 import pandas as pd
-from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
+import asyncio
+import matplotlib.pyplot as plt
 
+from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
 def main():
     summoner_name = 'KaRasIK4'
     tag_name = 'EUW'
@@ -12,7 +14,7 @@ def main():
         match_history_response = requests.get(MATCH_HISTORY.format(puu_id))
         if match_history_response.status_code == 200:
             matches = match_history_response.json()
-            summ_dict = {}
+            games = []
             for i in matches:
                 match_info_response = requests.get(MATCH_STATS.format(i))
                 if match_info_response.status_code == 200:
@@ -35,11 +37,16 @@ def main():
                         else:
                             win_status = 'Loss'
                         match_type = match_data['info']['gameMode']
-                        mydict = dict(summ_dict,Champion=champion_name, Kills= kills, Deaths=deaths, Assists=assists, TeamPosition=team_position,WinStatus=win_status,Type=match_type)
-                        print(champion_name, kills, deaths, assists, kda, team_position, win_status,match_type)
-                        print(mydict)
+                        stats = {'Champion': champion_name, 'Kills': kills, 'Deaths': deaths, 'Assists': assists,'KDA': kda, 'Position': team_position, 'Win/Lose': win_status, 'Type': match_type}
+                        games.append(stats)
+                        print(stats)
                     else:
-                        print('Фан режим))')
+                        print('Фан режим')
+            game_data = pd.DataFrame(games)
+            print(game_data.head())
+            plt.hist(game_data['Kills'], bins=30)
+            plt.show()
+
 
 
 

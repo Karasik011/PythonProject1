@@ -39,7 +39,7 @@ def main():
                         print(champion_name, kills, deaths, assists, kda, team_position, win_status,match_type)
                         print(mydict)
                     else:
-                        print('Фан режим')
+                        print('Фан режим))')
 
 
 

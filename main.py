@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
-keys = ['Champion Name', 'Kills','Deaths','Assists','Role','Win Status']
+
 def main():
     summoner_name = 'KaRasIK4'
     tag_name = 'EUW'

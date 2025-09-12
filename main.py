@@ -40,7 +40,7 @@ def main():
                         print(mydict)
                     else:
                         print('Фан режим')
-                    champs_data = pd.DataFrame(mydict)
+
 
 
 main()

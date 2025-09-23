@@ -15,11 +15,11 @@ async def request(session, url):
             return print(f'Mistake:{response.status}')
 
 newTable = []
-async def main(summoner_name, tag_name):
+async def main(summoner_name, tag_name, count):
     async with aiohttp.ClientSession() as session:
         data = await request(session, SUMMONER_INFO.format(summoner_name, tag_name))
         puu_id = data['puuid']
-        matches = await request(session, MATCH_HISTORY.format(puu_id))
+        matches = await request(session, MATCH_HISTORY.format(puu_id, count))
         for i in matches:
                 async with session.get(MATCH_STATS.format(i)) as match_info_response:
                     if match_info_response.status == 200:
@@ -41,17 +41,16 @@ async def main(summoner_name, tag_name):
                         print(stats)
                         continue
 
-asyncio.run(main('Karasik4', 'EUW'))
+asyncio.run(main('Karasik4', 'EUW', 20))
 MatchData = pd.DataFrame(newTable)
 MatchData.head()
 
 
 
-asyncio.run(main('Karasik4', 'EUW'))
+
 #Хочу выводить КДА на дистанции 100 игр с помощью гистограмы и высчитать среднее KDA
 
-plt.bar(MatchData['Position'],MatchData['KDA'].mean())
-
+plt.bar(MatchData['Position'],MatchData['KDA'])
 plt.show()
 
 

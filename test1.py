@@ -39,21 +39,20 @@ async def parse_match(session, match_id, puu_id):
     }
 
 
-async def main(summoner_name, tag_name):
+async def main(summoner_name, tag_name, count):
     async with aiohttp.ClientSession() as session:
         # Отримуємо puu_id
         data = await fetch_json(session, SUMMONER_INFO.format(summoner_name, tag_name))
         if not data:
             print("Summoner not found")
-            return
-
+            return None
         puu_id = data['puuid']
 
         # Отримуємо історію матчів
-        matches = await fetch_json(session, MATCH_HISTORY.format(puu_id))
+        matches = await fetch_json(session, MATCH_HISTORY.format(puu_id, count))
         if not matches:
             print("No match history")
-            return
+            return None
 
         # Паралельний збір статистики по матчах
         tasks = [parse_match(session, match_id, puu_id) for match_id in matches]
@@ -69,4 +68,4 @@ async def main(summoner_name, tag_name):
         return games
 
 # Запуск
-asyncio.run(main("KaRasIK4", "EUW"))
+asyncio.run(main("KaRasIK4", "EUW", 20))

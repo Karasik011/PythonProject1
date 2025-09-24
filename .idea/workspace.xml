@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33206671-a371-47b5-bada-f2de06e8b6a5" name="Changes" comment=".">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="33206671-a371-47b5-bada-f2de06e8b6a5" name="Changes" comment="." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,7 +83,7 @@
       <workItem from="1757598445956" duration="95000" />
       <workItem from="1757610799522" duration="16967000" />
       <workItem from="1757675196671" duration="192000" />
-      <workItem from="1757675393298" duration="75412000" />
+      <workItem from="1757675393298" duration="76041000" />
     </task>
     <task id="LOCAL-00001" summary="first version">
       <option name="closed" value="true" />
@@ -200,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758730630684</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary=".">
+      <option name="closed" value="true" />
+      <created>1758731834440</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1758731834440</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

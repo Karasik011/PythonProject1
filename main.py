@@ -8,14 +8,14 @@ tracemalloc.start()
 from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
 
 
-
+Table = []
 async def request(session, url):
     async with session.get(url) as response:
         if response.status == 200:
             return await response.json()
         else:
             print(f'Mistake:{response.status}')
-            return
+            return None
 
 
 async def match_data(session, match_id, puuid):
@@ -50,11 +50,13 @@ async def main(summoner_name, tag_name, count):
         outcome = await asyncio.gather(*dicts)
         result = [i for i in outcome if i]
         for a in result:
-            print(a)
+            Table.append(a)
         return result
 
 
-asyncio.run(main('Karasik4', 'EUW', 20))
+asyncio.run(main('Karasik4', 'EUW', 10))
+DataTable = pd.DataFrame(Table)
+print(DataTable)
 #MatchData = pd.DataFrame(newTable)
 #MatchData.head()
 

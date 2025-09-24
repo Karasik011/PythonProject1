@@ -8,23 +8,27 @@ tracemalloc.start()
 from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
 
 
-newTable = []
+
 async def request(session, url):
     async with session.get(url) as response:
         if response.status == 200:
             return await response.json()
         else:
-            return print(f'Mistake:{response.status}')
+            print(f'Mistake:{response.status}')
+            return
 
 
 async def match_data(session, match_id, puuid):
     match_stats = await request(session, MATCH_STATS.format(match_id))
+    if not match_stats:
+        return None
     if match_stats['info']['gameMode'] != 'CLASSIC':
         return None
     participants = match_stats['metadata']['participants']
     player_index = participants.index(puuid)
     player_info = match_stats['info']['participants'][player_index]
     champion_name = player_info['championName']
+    Id_match = match_id
     kills = player_info['kills']
     deaths = player_info['deaths']
     assists = player_info['assists']
@@ -32,16 +36,9 @@ async def match_data(session, match_id, puuid):
     team_position = player_info['teamPosition']
     win_status = 'Win' if player_info['win'] else 'Lose'
     match_type = match_stats['info']['gameMode']
-    stats = {'Champion': champion_name, 'Kills': kills, 'Deaths': deaths, 'Assists': assists, 'KDA': kda,
+    stats = {'Id': Id_match,'Champion': champion_name, 'Kills': kills, 'Deaths': deaths, 'Assists': assists, 'KDA': kda,
              'Position': team_position, 'Win Status': win_status, 'Type': match_type}
     return stats
-
-
-
-
-
-
-
 
 
 async def main(summoner_name, tag_name, count):
@@ -52,15 +49,14 @@ async def main(summoner_name, tag_name, count):
         dicts = [match_data(session, match_id, puu_id) for match_id in match_id]
         outcome = await asyncio.gather(*dicts)
         result = [i for i in outcome if i]
-        newTable.append(result)
-        print(result)
+        for a in result:
+            print(a)
         return result
 
 
 asyncio.run(main('Karasik4', 'EUW', 20))
 #MatchData = pd.DataFrame(newTable)
 #MatchData.head()
-
 
 
 

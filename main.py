@@ -54,7 +54,7 @@ async def main(summoner_name, tag_name, count):
         return result
 
 
-asyncio.run(main('Karasik4', 'EUW', 10))
+asyncio.run(main('Karasik4', 'EUW', 70))
 DataTable = pd.DataFrame(Table)
 print(DataTable)
 #MatchData = pd.DataFrame(newTable)

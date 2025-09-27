@@ -1,9 +1,14 @@
+from itertools import repeat
+
 import aiohttp
-import requests
+import time
 import pandas as pd
 import asyncio
 import matplotlib.pyplot as plt
 import tracemalloc
+
+from numpy.ma.core import append
+
 tracemalloc.start()
 from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
 
@@ -13,6 +18,9 @@ async def request(session, url):
     async with session.get(url) as response:
         if response.status == 200:
             return await response.json()
+        elif response.status == 429:
+            await asyncio.sleep(0.5)
+            return await request(session, url)
         else:
             print(f'Mistake:{response.status}')
             return None

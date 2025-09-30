@@ -1,29 +1,35 @@
 from itertools import repeat
-
-import aiohttp
 import time
+import aiohttp
+import aiolimiter
 import pandas as pd
 import asyncio
 import matplotlib.pyplot as plt
 import tracemalloc
 
+from aiolimiter import AsyncLimiter
 from numpy.ma.core import append
 
 tracemalloc.start()
 from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
 
-
+rate_limit_sec = AsyncLimiter(20, 1)
+rate_limit_min = AsyncLimiter(100, 120)
 Table = []
 async def request(session, url):
-    async with session.get(url) as response:
-        if response.status == 200:
-            return await response.json()
-        elif response.status == 429:
-            await asyncio.sleep(0.5)
-            return await request(session, url)
-        else:
-            print(f'Mistake:{response.status}')
-            return None
+    async with rate_limit_sec, rate_limit_min:
+        async with session.get(url) as response:
+            if response.status == 200:
+                return await response.json()
+            elif response.status == 429:
+                print('Waiting')
+                Retry_time = int(response.headers.get('Retry-After'))
+                print(f'Time to retry: {Retry_time}')
+                await asyncio.sleep(1)
+                return await request(session, url)
+            else:
+                print(f'Mistake:{response.status}')
+                return None
 
 
 async def match_data(session, match_id, puuid):
@@ -55,25 +61,27 @@ async def main(summoner_name, tag_name, count):
         puu_id = data['puuid']
         match_id = await request(session, MATCH_HISTORY.format(puu_id, count))
         dicts = [match_data(session, match_id, puu_id) for match_id in match_id]
-        outcome = await asyncio.gather(*dicts)
-        result = [i for i in outcome if i]
-        for a in result:
-            Table.append(a)
+        for i in range (0, len(dicts), 10):
+            data_slice = dicts[i:i+10]
+            outcome = await asyncio.gather(*data_slice)
+            result = [r for r in outcome if r]
+            for a in result:
+                Table.append(a)
+
+            await asyncio.sleep(1)
         return result
 
 
 asyncio.run(main('Karasik4', 'EUW', 70))
 DataTable = pd.DataFrame(Table)
 print(DataTable)
-#MatchData = pd.DataFrame(newTable)
-#MatchData.head()
 
+#async def KDA(kda, position):
+        #plt.bar(position, kda)
+        #plt.show()
 
-
+#asyncio.run(KDA(DataTable['KDA'], DataTable['Position']))
 #Хочу выводить КДА на дистанции 100 игр с помощью гистограмы и высчитать среднее KDA
-
-#plt.bar(MatchData['Position'],MatchData['KDA'])
-#plt.show()
 
 
 

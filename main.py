@@ -79,8 +79,8 @@ Datas = asyncio.run(main('Karasik4', 'EUW', 70))
 DataTable = pd.DataFrame(Datas)
 print(DataTable)
 
-
-
+plt.hist(DataTable['Deaths'])
+plt.show()
 DataTable.to_sql(name = 'games', con=database, if_exists='replace', index=False)
 database.commit()
 

@@ -19,7 +19,7 @@ cursor = database.cursor()
 
 rate_limit_sec = AsyncLimiter(20, 1)
 rate_limit_min = AsyncLimiter(100, 120)
-Table = []
+
 async def request(session, url):
     async with rate_limit_sec, rate_limit_min:
         async with session.get(url) as response:
@@ -60,6 +60,7 @@ async def match_data(session, match_id, puuid):
 
 
 async def main(summoner_name, tag_name, count):
+    table = []
     async with aiohttp.ClientSession() as session:
         data = await request(session, SUMMONER_INFO.format(summoner_name, tag_name))
         puu_id = data['puuid']
@@ -69,20 +70,20 @@ async def main(summoner_name, tag_name, count):
             data_slice = dicts[i:i+10]
             outcome = await asyncio.gather(*data_slice)
             result = [r for r in outcome if r]
-            for a in result:
-                Table.append(a)
+            table.extend(result)
             await asyncio.sleep(1)
-        return result
+        return table
 
 
-asyncio.run(main('Karasik4', 'EUW', 70))
-DataTable = pd.DataFrame(Table)
+Datas = asyncio.run(main('Karasik4', 'EUW', 70))
+DataTable = pd.DataFrame(Datas)
 print(DataTable)
 
 
 
 DataTable.to_sql(name = 'games', con=database, if_exists='replace', index=False)
 database.commit()
+
 database.close()
 #game_count = datatable.groupby(['Position'])['Id'].count()
 #print(game_count)

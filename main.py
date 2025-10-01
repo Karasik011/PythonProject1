@@ -1,17 +1,21 @@
 from itertools import repeat
 import time
 import aiohttp
-import aiolimiter
+import os
 import pandas as pd
 import asyncio
 import matplotlib.pyplot as plt
 import tracemalloc
-
+import sqlite3
 from aiolimiter import AsyncLimiter
 from numpy.ma.core import append
+from pandas.core.interchange.dataframe_protocol import DataFrame
 
 tracemalloc.start()
 from constants import SUMMONER_INFO, MATCH_HISTORY, MATCH_STATS
+
+database = sqlite3.connect('database.db')
+cursor = database.cursor()
 
 rate_limit_sec = AsyncLimiter(20, 1)
 rate_limit_min = AsyncLimiter(100, 120)
@@ -25,7 +29,7 @@ async def request(session, url):
                 print('Waiting')
                 Retry_time = int(response.headers.get('Retry-After'))
                 print(f'Time to retry: {Retry_time}')
-                await asyncio.sleep(1)
+                await asyncio.sleep(Retry_time)
                 return await request(session, url)
             else:
                 print(f'Mistake:{response.status}')
@@ -49,9 +53,9 @@ async def match_data(session, match_id, puuid):
     kda = (kills + assists) / deaths if deaths > 0 else (kills + assists)
     team_position = player_info['teamPosition']
     win_status = 'Win' if player_info['win'] else 'Lose'
-    match_type = match_stats['info']['gameMode']
-    stats = {'Id': Id_match,'Champion': champion_name, 'Kills': kills, 'Deaths': deaths, 'Assists': assists, 'KDA': kda,
-             'Position': team_position, 'Win Status': win_status, 'Type': match_type}
+    #match_type = match_stats['info']['gameMode']
+    stats = {'Match_Id': Id_match,'Champion': champion_name, 'Kills': kills, 'Deaths': deaths, 'Assists': assists, 'KDA': kda,
+             'Position': team_position, 'Win_Status': win_status}
     return stats
 
 
@@ -67,7 +71,6 @@ async def main(summoner_name, tag_name, count):
             result = [r for r in outcome if r]
             for a in result:
                 Table.append(a)
-
             await asyncio.sleep(1)
         return result
 
@@ -76,11 +79,24 @@ asyncio.run(main('Karasik4', 'EUW', 70))
 DataTable = pd.DataFrame(Table)
 print(DataTable)
 
-#async def KDA(kda, position):
-        #plt.bar(position, kda)
-        #plt.show()
 
-#asyncio.run(KDA(DataTable['KDA'], DataTable['Position']))
+
+DataTable.to_sql(name = 'games', con=database, if_exists='replace', index=False)
+database.commit()
+database.close()
+#game_count = datatable.groupby(['Position'])['Id'].count()
+#print(game_count)
+#kda_by_pos = datatable.groupby(['Position'])['KDA'].mean()
+#print(kda_by_pos)
+#plt.bar(kda_by_pos.index, kda_by_pos.values)
+#plt.show()
+
+#def KDA(kda, position):
+    #avg_kda = int(sum(kda) / len(kda))
+    #plt.bar(position, avg_kda)
+    #plt.show()
+
+#KDA(DataTable['KDA'], DataTable['Position'])
 #Хочу выводить КДА на дистанции 100 игр с помощью гистограмы и высчитать среднее KDA
 
 

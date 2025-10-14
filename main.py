@@ -27,6 +27,7 @@ async def on_ready():
     print(f'Guild Members:\n - {members}')
     print(f'Guild owner:\n - {guild.owner}')
 
+
 async def setup_bot():
     await bot.add_cog(Commands(bot))
     await bot.add_cog(Reactions(bot))

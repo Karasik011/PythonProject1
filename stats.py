@@ -57,6 +57,7 @@ async def match_data(session, match_id, puuid):
 
 async def get_info(summoner_name, tag_name, count):
     table = []
+
     async with aiohttp.ClientSession() as session:
         data = await request(session, SUMMONER_INFO.format(summoner_name, tag_name))
         puu_id = data['puuid']
@@ -71,15 +72,11 @@ async def get_info(summoner_name, tag_name, count):
         return table
 
 
-# Datas = asyncio.run(main('Karasik4', 'EUW', 70))
-# DataTable = pd.DataFrame(Datas)
-# print(DataTable)
-#
-# plt.hist(DataTable['Deaths'])
-# plt.show()
-# #DataTable.to_sql(name = 'games', con=database, if_exists='replace', index=False)
-# #database.commit()
-# #database.close()
+
+
+# table.to_sql(name = 'games', con=database, if_exists='replace', index=False)
+# database.commit()
+# database.close()
 # game_count = DataTable.groupby(['Position'])['Id'].count()
 # print(game_count)
 # kda_by_pos = DataTable.groupby(['Position'])['KDA'].mean()

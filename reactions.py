@@ -9,9 +9,15 @@ class Reactions(commands.Cog):
         self.girl_id = 707651921653268541
         self.yarik_id = 705164601280561212
         self.monika_id = 341275729255858177
+        self.ping_message = {self.yarik_id:'Вызываем шмеля: жжжж', self.girl_id:'Вызываем фемцелку'}
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        for users in message.mentions:
+            if users.id in self.ping_message:
+                result = self.ping_message[users.id]
+                await message.channel.send(result)
+
         if message.author == self.bot.user:
             return
         if message.content.startswith('/'):

@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33206671-a371-47b5-bada-f2de06e8b6a5" name="Changes" comment="first bot functions">
+    <list default="true" id="33206671-a371-47b5-bada-f2de06e8b6a5" name="Changes" comment="add csv saving in bot commands">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/commands.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/reactions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/stats.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,6 +59,7 @@
     "Python.discord.executor": "Run",
     "Python.main.executor": "Run",
     "Python.reactions.executor": "Run",
+    "Python.stats.executor": "Run",
     "Python.test.executor": "Run",
     "Python.test1.executor": "Run",
     "Python.овш1.executor": "Run",
@@ -278,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760031928632</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="add csv saving in bot commands">
+      <option name="closed" value="true" />
+      <created>1760450584828</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1760450584828</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -306,7 +313,8 @@
     <MESSAGE value="пытался записывать в дб(не получилось)" />
     <MESSAGE value="затестил обьединение веток" />
     <MESSAGE value="first bot functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="first bot functions" />
+    <MESSAGE value="add csv saving in bot commands" />
+    <option name="LAST_COMMIT_MESSAGE" value="add csv saving in bot commands" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject$discord.coverage" NAME="discord Coverage Results" MODIFIED="1759578303881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

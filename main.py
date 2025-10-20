@@ -30,7 +30,7 @@ async def on_ready():
 
 async def setup_bot():
     await bot.add_cog(Commands(bot))
-    await bot.add_cog(Reactions(bot))
+    #await bot.add_cog(Reactions(bot))
 
 async def main():
     async with bot:
